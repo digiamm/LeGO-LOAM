@@ -45,9 +45,9 @@ link_directories(
 	${GTSAM_LIBRARY_DIRS}
 )
 
-add_executable(trajectoryDumper src/trajectoryDumper.cpp)
-add_dependencies(trajectoryDumper ${catkin_EXPORTED_TARGETS} cloud_msgs_gencpp)
-target_link_libraries(trajectoryDumper ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBRARIES})
+# add_executable(trajectoryDumper src/trajectoryDumper.cpp)
+# add_dependencies(trajectoryDumper ${catkin_EXPORTED_TARGETS} cloud_msgs_gencpp)
+# target_link_libraries(trajectoryDumper ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBRARIES})
 
 add_executable(imageProjection src/imageProjection.cpp)
 add_dependencies(imageProjection ${catkin_EXPORTED_TARGETS} cloud_msgs_gencpp)
