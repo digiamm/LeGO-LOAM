@@ -140,3 +140,37 @@ An optimized version of LeGO-LOAM can be found [here](https://github.com/faconti
     + To convert a multi-process application into a single-process / multi-threading one; this makes the algorithm more deterministic and slightly faster.
     + To make it easier and faster to work with rosbags: processing a rosbag should be done at maximum speed allowed by the CPU and in a deterministic way.
     + As a consequence of the previous point, creating unit and regression tests will be easier.
+    
+    
+# LeGO-LOAM docker
+
+## How to use
+
+```bash
+# login
+bash run.sh
+
+# test if opengl is working 
+glxgears
+
+# Run LeGO-LOAM
+source ~/catkin_ws/devel/setup.bash
+roslaunch lego_loam run.launch
+```
+
+
+Open another terminal
+```bash
+# login into same container
+bash login.sh
+
+# Play rosbag
+rosbag play *.bag --clock --topic /velodyne_points /imu/data
+## or if you wanna remap topic
+rosbag play *.bag --clock /os1_cloud_node/points:=/velodyne_points
+```
+
+# Save map
+```
+rosrun pcl_ros pointcloud_to_pcd input:=/laser_cloud_surround
+```
