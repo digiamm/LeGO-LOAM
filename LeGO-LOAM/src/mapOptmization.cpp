@@ -219,6 +219,11 @@ private:
     float cRoll, sRoll, cPitch, sPitch, cYaw, sYaw, tX, tY, tZ;
     float ctRoll, stRoll, ctPitch, stPitch, ctYaw, stYaw, tInX, tInY, tInZ;
 
+    // srrg laser odom
+    std::string laser_odom_filename;  
+    std::ofstream laser_odom_stream;
+
+
 public:
 
     
@@ -261,6 +266,13 @@ public:
 
         aftMappedTrans.frame_id_ = "/camera_init";
         aftMappedTrans.child_frame_id_ = "/aft_mapped";
+        
+        // srrg laser odom
+        laser_odom_filename = "/tmp/estimate.txt";
+        laser_odom_stream = std::ofstream(laser_odom_filename);
+        laser_odom_stream << "# timestamp tx ty tz qx qy qz qw" << std::endl;
+        laser_odom_stream << std::setprecision(9);
+        laser_odom_stream << std::fixed;
 
         allocateMemory();
     }
@@ -753,6 +765,7 @@ public:
         pcl::io::savePCDFileASCII(fileDirectory+"cornerMap.pcd", *cornerMapCloudDS);
         pcl::io::savePCDFileASCII(fileDirectory+"surfaceMap.pcd", *surfaceMapCloudDS);
         pcl::io::savePCDFileASCII(fileDirectory+"trajectory.pcd", *cloudKeyPoses3D);
+
     }
 
     void publishGlobalMap(){
@@ -1423,6 +1436,18 @@ public:
         thisPose6D.yaw   = latestEstimate.rotation().roll(); // in camera frame
         thisPose6D.time = timeLaserOdometry;
         cloudKeyPoses6D->push_back(thisPose6D);
+
+        // srrg write to text file
+        std::cerr << "l";
+        laser_odom_stream << timeLaserOdometry << " " 
+                          << thisPose6D.x << " " 
+                          << thisPose6D.y << " " 
+                          << thisPose6D.z << " " 
+                          << latestEstimate.rotation().quaternion().x() << " " 
+                          << latestEstimate.rotation().quaternion().y() << " " 
+                          << latestEstimate.rotation().quaternion().z() << " " 
+                          << latestEstimate.rotation().quaternion().w() << std::endl;
+  
         /**
          * save updated transform
          */
