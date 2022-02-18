@@ -24,6 +24,7 @@ bash login.sh
 rosbag play *.bag --clock --topic /velodyne_points /imu/data
 ## or if you wanna remap topic
 rosbag play *.bag --clock /os1_cloud_node/points:=/velodyne_points
+rosbag play *.bag --clock /os_cloud_node/points:=/velodyne_points
 ```
 
 # Save map

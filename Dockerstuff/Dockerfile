@@ -15,9 +15,13 @@ RUN wget -O ~/gtsam.zip https://github.com/borglab/gtsam/archive/4.0.0-alpha2.zi
 RUN cd ~/ && unzip gtsam.zip && ls && cd gtsam-4.0.0-alpha2/ && mkdir build && cd build && cmake .. && make install -j8 
 #RUN cd ~/gtsam-4.0.0-alpha2/ && mkdir build && cd build && cmake .. && make install -j4
 
+RUN apt-get install -y ros-melodic-pcl-ros
+
 # Compile LeGO-LOAM
 RUN mkdir -p ~/catkin_ws/src
 RUN mkdir -p ~/catkin_ws/src && cd ~/catkin_ws/src && git clone https://github.com/digiamm/LeGO-LOAM.git 
+
+RUN apt-get install -y vim
 # Original pipeline from
 # git clone https://github.com/RobustFieldAutonomyLab/LeGO-LOAM.git
 RUN /bin/sh -c '. /opt/ros/melodic/setup.sh; cd ~/catkin_ws ; catkin_make -j1'
