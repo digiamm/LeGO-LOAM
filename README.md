@@ -170,6 +170,9 @@ rosbag play *.bag --clock --topic /velodyne_points /imu/data
 rosbag play *.bag --clock /os1_cloud_node/points:=/velodyne_points
 ```
 
+# Trajectory estimate
+SLAM trajectory in TUM format (timestamp tx ty tz qx qy qz qw) is saved into `/tmp/estimate.txt` 
+
 # Save map
 ```
 rosrun pcl_ros pointcloud_to_pcd input:=/laser_cloud_surround
