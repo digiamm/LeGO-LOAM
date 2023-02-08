@@ -1436,22 +1436,27 @@ public:
         thisPose6D.yaw   = latestEstimate.rotation().roll(); // in camera frame
         thisPose6D.time = timeLaserOdometry;
         cloudKeyPoses6D->push_back(thisPose6D);
-
-        // srrg write to text file
-        std::cerr << "l";
-        laser_odom_stream << timeLaserOdometry << " " 
-                          << thisPose6D.x << " " 
-                          << thisPose6D.y << " " 
-                          << thisPose6D.z << " " 
-                          << latestEstimate.rotation().quaternion().x() << " " 
-                          << latestEstimate.rotation().quaternion().y() << " " 
-                          << latestEstimate.rotation().quaternion().z() << " " 
-                          << latestEstimate.rotation().quaternion().w() << std::endl;
-  
+        
+	// srrg write to text file
+        Eigen::Affine3f T = pclPointToAffine3fCameraToLidar(thisPose6D);
+	Eigen::Quaternionf quat(T.linear());
+	// std::cerr << T.translation().transpose() << " " << quat.x() << " " << quat.y() << " " << quat.z() << " " << quat.w() << std::endl;	
+	// std::cerr << std::endl;
+        std::cerr << "l\t";
+	laser_odom_stream << timeLaserOdometry << " " 
+			  << T.translation().x() << " "
+                          << T.translation().y() << " "
+                          << T.translation().z() << " "
+		          << quat.x() << " " << quat.y() << " " << quat.z() << " " << quat.w() << std::endl;
+ 
+	// std::cerr << "===========================================================" << std::endl;
         /**
          * save updated transform
          */
         if (cloudKeyPoses3D->points.size() > 1){
+            //std::cerr << latestEstimate.translation().x() << " " << latestEstimate.translation().y() << " " << latestEstimate.translation().z() << " "
+	    //	      << latestEstimate.rotation().quaternion().x() << " " << latestEstimate.rotation().quaternion().y() << " " << latestEstimate.rotation().quaternion().z() << " "
+	    //	      << latestEstimate.rotation().quaternion().w() << std::endl;
             transformAftMapped[0] = latestEstimate.rotation().pitch();
             transformAftMapped[1] = latestEstimate.rotation().yaw();
             transformAftMapped[2] = latestEstimate.rotation().roll();
