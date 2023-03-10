@@ -4,7 +4,7 @@
 
 ```bash
 # login
-bash run.sh
+bash run.sh /path-to-data
 
 # test if opengl is working 
 glxgears
